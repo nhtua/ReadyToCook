@@ -5,17 +5,17 @@
   - name: Check if Oh My Zsh exists
     stat:
       path: ~/.oh-my-zsh
-    register: ohmyzsh_status
+    register: ohmyzsh_dir
   - name: Download Oh My Zsh
     get_url:
       url: https://install.ohmyz.sh/
       dest: "/tmp/ohmyz.sh"
       mode: "0755"
-    when: ohmyzsh_status.stat.exists is not defined or not ohmyzsh_status.stat.exists
+    when: not ohmyzsh_dir.stat.exists
   - name: Install Oh My Zsh
     shell:
       cmd: sh /tmp/ohmyz.sh
-    when: ohmyzsh_status.stat.exists is not defined or not ohmyzsh_status.stat.exists
+    when: not ohmyzsh_dir.stat.exists
   - name: Enable OhMyZsh configuration
     lineinfile:
       path: ~/.zprofile
@@ -31,7 +31,7 @@
       state: present
       update_homebrew: yes
   - homebrew_cask:
-      name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline
+      name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline,font-hack-nerd-font
       state: present
   - name: Check if Lazy.nvim exists
     stat:
@@ -43,13 +43,6 @@
       dest: ~/.config/nvim
       depth: 1
     when: not lazynvim_dir.stat.exists
-  - name: Update Lazy.nvim
-    git:
-      repo: https://github.com/LazyVim/starter
-      dest: ~/.config/nvim
-      depth: 1
-      update: yes
-    when: lazynvim_dir.stat.exists
   - name: Clean up Lazy.nvim
     file:
       path: ~/.config/nvim/.git
