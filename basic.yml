@@ -33,4 +33,15 @@
   - homebrew_cask:
       name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline
       state: present
+  - name: Download Lazy.nvim
+    git:
+      repo: https://github.com/LazyVim/starter
+      dest: ~/.config/nvim
+      depth: 1
+  - name: Clean up Lazy.nvim
+    file:
+      path: ~/.config/nvim/.git
+      state: absent
     
+
+
