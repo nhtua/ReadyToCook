@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  remote_user: liam
+  tasks:
+  - name: Check if Oh My Zsh exists
+    stat:
+      path: ~/.oh-my-zsh
+    register: ohmyzsh_status
+  - name: Download Oh My Zsh
+    get_url:
+      url: https://install.ohmyz.sh/
+      dest: "/tmp/ohmyz.sh"
+      mode: "0755"
+    when: ohmyzsh_status.stat.exists is not defined or not ohmyzsh_status.stat.exists
+  - name: Install Oh My Zsh
+    shell:
+      cmd: sh /tmp/ohmyz.sh
+    when: ohmyzsh_status.stat.exists is not defined or not ohmyzsh_status.stat.exists
+  - name: Enable OhMyZsh configuration
+    lineinfile:
+      path: ~/.zprofile
+      line: "[[ -r ~/.zshrc ]] && . ~/.zshrc"
+      state: present
+      create: yes
+  - name: Copy Zshrc
+    copy:
+      src: .zshrc
+      dest: ~/.zshrc
+  - homebrew:
+      name: neovim,htop,tmux
+      state: present
+      update_homebrew: yes
+  - homebrew_cask:
+      name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline
+      state: present
+    
