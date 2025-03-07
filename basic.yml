@@ -27,17 +27,29 @@
       src: .zshrc
       dest: ~/.zshrc
   - homebrew:
-      name: neovim,htop,tmux
+      name: neovim,htop,btop,tmux
       state: present
       update_homebrew: yes
   - homebrew_cask:
       name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline
       state: present
+  - name: Check if Lazy.nvim exists
+    stat:
+      path: ~/.config/nvim
+    register: lazynvim_dir
   - name: Download Lazy.nvim
     git:
       repo: https://github.com/LazyVim/starter
       dest: ~/.config/nvim
       depth: 1
+    when: not lazynvim_dir.stat.exists
+  - name: Update Lazy.nvim
+    git:
+      repo: https://github.com/LazyVim/starter
+      dest: ~/.config/nvim
+      depth: 1
+      update: yes
+    when: lazynvim_dir.stat.exists
   - name: Clean up Lazy.nvim
     file:
       path: ~/.config/nvim/.git
