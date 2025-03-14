@@ -13,3 +13,12 @@ ENABLE_CORRECTION="true"
 source $ZSH/oh-my-zsh.sh
 
 export LANG=en_US.UTF-8
+
+
+if [[ -z "$TMUX" && -n "$PS1" ]]; then
+    tmux attach -t default || tmux new -s default
+fi
+
+export NVM_DIR="/opt/homebrew/opt/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
