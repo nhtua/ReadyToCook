@@ -50,6 +50,10 @@
     file:
       path: ~/.config/nvim/.git
       state: absent
+  - name: Copy NeoVim config
+    copy:
+      src: ../share/nvim-core.lua
+      dest: ~/.config/nvim/lua/plugins/core.lua
     
 
 
