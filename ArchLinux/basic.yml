@@ -27,13 +27,15 @@
     copy:
       src: .zshrc
       dest: ~/.zshrc
-  - homebrew:
+  - pacman:
       name: neovim,htop,btop,tmux,fzf,fd,ripgrep
       state: present
-      update_homebrew: yes
-  - homebrew_cask:
-      name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline,font-hack-nerd-font
+      update_cache: yes
+    become: true
+  - pacman:
+      name: ttf-hack-nerd,ttf-noto-nerd
       state: present
+    become: true
   - name: Check if Lazy.nvim exists
     stat:
       path: ~/.config/nvim
