@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  connection: local
   remote_user: liam
   tasks:
   - name: Check if Oh My Zsh exists
