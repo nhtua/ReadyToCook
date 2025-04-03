@@ -1,3 +1,7 @@
+alias python=python3
+
+
+
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_THEME="cloud"
 #plugins=(git 1password alias-finder ansible autoenv autojump autopep8 battery brew cp fzf gh git gitignore golang helm kubectl npm pip poetry pyenv rust) 
@@ -22,3 +26,8 @@ fi
 export NVM_DIR="/opt/homebrew/opt/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
