@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  connection: local
+  remote_user: liam
+  tasks:
+    - pacman:
+        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep
+        state: present
+        update_cache: yes
+      become: true
+    - pacman:
+        name: ttf-hack-nerd,ttf-noto-nerd
+        state: present
+      become: true
+    - name: Ensure destination directory exists
+      file:
+        path: ~/.config/fish
+        state: directory
+    - name: Copy Fish config
+      copy:
+        src: config.fish
+        dest: ~/.config/fish/config.fish
+    - name: Check if Lazy.nvim exists
+      stat:
+        path: ~/.config/nvim
+      register: lazynvim_dir
+    - name: Download Lazy.nvim
+      git:
+        repo: https://github.com/LazyVim/starter
+        dest: ~/.config/nvim
+        depth: 1
+      when: not lazynvim_dir.stat.exists
+    - name: Clean up Lazy.nvim
+      file:
+        path: ~/.config/nvim/.git
+        state: absent
+    - name: Copy NeoVim config
+      copy:
+        src: ../share/nvim-core.lua
+        dest: ~/.config/nvim/lua/plugins/core.lua
