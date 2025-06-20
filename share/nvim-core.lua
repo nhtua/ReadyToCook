@@ -48,6 +48,17 @@ return {
         function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
         desc = "Find Plugin File",
       },
+      {
+        "<leader>s.",
+        function()
+          require("telescope.builtin").live_grep({ 
+            additional_args = {"--hidden"}, 
+            search_dirs = { vim.fn.getcwd() },
+            cwd = require("lazy.core.config").options.root 
+          })
+        end,
+        desc = "Grep (hidden)",
+      },
     },
     -- change some options
     opts = {
@@ -110,7 +121,34 @@ return {
         "shellcheck",
         "shfmt",
         "flake8",
+        "emmet-language-server"
       },
+    },
+  },
+  {
+    "olrtg/nvim-emmet",
+    config = function()
+      vim.keymap.set({ "n", "v" }, '<leader>xe', require('nvim-emmet').wrap_with_abbreviation)
+    end,
+  },
+
+  -- Tmux Nvim Navigator
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+      "TmuxNavigatorProcessList",
+    },
+    keys = {
+      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
 }
