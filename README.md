@@ -1,4 +1,4 @@
-*** Ready to Cook, Chef?? 🧑‍🍳 ***
+# Ready to Cook, Chef?? 🧑‍🍳 #
 
 Ever dreamt of setting up your dev environment faster than a microwave dinner? Well, dream no more! This repo helps you get your workstation ready in minutes, leveraging community-shared configs.
 
