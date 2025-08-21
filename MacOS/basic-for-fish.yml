@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   connection: local
-  remote_user: liam
+  remote_user: "{{ lookup('env', 'USER') }}"
   tasks:
     - homebrew:
         name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
@@ -10,10 +10,23 @@
     - homebrew_cask:
         name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline,font-hack-nerd-font
         state: present
+
+    - name: Check if Fish config exists
+      stat:
+        path: ~/.config/fish/config.fish
+      register: fish_config_file
     - name: Copy Fish config
       copy:
-        src: config.fish
+        src: ../Shared/config.fish
         dest: ~/.config/fish/config.fish
+        create_parents: yes
+      when: not fish_config_file.stat.exists
+    - name: Copy Fish extra config
+      copy:
+        src: extra.config.fish
+        dest: ~/.config/fish/conf.d/extra.config.fish
+        create_parents: yes
+
     - name: Check if Lazy.nvim exists
       stat:
         path: ~/.config/nvim
@@ -28,6 +41,11 @@
       file:
         path: ~/.config/nvim/.git
         state: absent
+    - name: Copy NeoVim config
+      copy:
+        src: ../share/nvim-core.lua
+        dest: ~/.config/nvim/lua/plugins/core.lua
+
     - name: Install Tmux TMP plugins manager
       git:
         repo: https://github.com/tmux-plugins/tpm
@@ -35,8 +53,9 @@
         depth: 1
     - name: Copying Tmux configuration
       copy:
-        src: .tmux.conf
+        src: ../Shared/.tmux.conf
         dest: ~/.tmux.conf
+
     - name: Install Fisher plugin manager
       ansible.builtin.shell: |
         curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher

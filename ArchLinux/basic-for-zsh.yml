@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   connection: local
-  remote_user: liam
+  remote_user: "{{ lookup('env', 'USER') }}"
   tasks:
   - name: Check if Oh My Zsh exists
     stat:
@@ -27,8 +27,9 @@
     copy:
       src: .zshrc
       dest: ~/.zshrc
+
   - pacman:
-      name: neovim,htop,btop,tmux,fzf,fd,ripgrep
+      name: neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
       state: present
       update_cache: yes
     become: true
@@ -36,6 +37,7 @@
       name: ttf-hack-nerd,ttf-noto-nerd
       state: present
     become: true
+
   - name: Check if Lazy.nvim exists
     stat:
       path: ~/.config/nvim
@@ -52,8 +54,20 @@
       state: absent
   - name: Copy NeoVim config
     copy:
-      src: ../share/nvim-core.lua
+      src: ../Shared/nvim-core.lua
       dest: ~/.config/nvim/lua/plugins/core.lua
-    
 
+  - name: Install Tmux TMP plugins manager
+    git:
+      repo: https://github.com/tmux-plugins/tpm
+      dest: ~/.tmux/plugins/tpm
+      depth: 1
+  - name: Copying Tmux configuration
+    copy:
+      src: ../Shared/.tmux.conf
+      dest: ~/.tmux.conf
+  - name: Install Node Version Manager
+    homebrew:
+      name: nvm
+      state: present
 

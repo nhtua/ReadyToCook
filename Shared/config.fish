@@ -1,4 +1,7 @@
 alias ap=ansible-playbook
+alias python=python3
+
+set -x PIP_CONFIG_FILE "$HOME/.config/pip/pip.conf"
 
 set -x LANG en_US.UTF-8
 

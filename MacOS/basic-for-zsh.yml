@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   connection: local
-  remote_user: liam
+  remote_user: "{{ lookup('env', 'USER') }}"
   tasks:
     - name: Check if Oh My Zsh exists
       stat:
@@ -27,6 +27,7 @@
       copy:
         src: .zshrc
         dest: ~/.zshrc
+
     - homebrew:
         name: neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
         state: present
@@ -34,6 +35,7 @@
     - homebrew_cask:
         name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline,font-hack-nerd-font
         state: present
+
     - name: Check if Lazy.nvim exists
       stat:
         path: ~/.config/nvim
@@ -48,6 +50,11 @@
       file:
         path: ~/.config/nvim/.git
         state: absent
+    - name: Copy NeoVim config
+      copy:
+        src: ../Shared/nvim-core.lua
+        dest: ~/.config/nvim/lua/plugins/core.lua
+
     - name: Install Tmux TMP plugins manager
       git:
         repo: https://github.com/tmux-plugins/tpm
@@ -55,7 +62,7 @@
         depth: 1
     - name: Copying Tmux configuration
       copy:
-        src: .tmux.conf
+        src: ../Shared/.tmux.conf
         dest: ~/.tmux.conf
     - name: Install Node Version Manager
       homebrew:

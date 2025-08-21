@@ -2,7 +2,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 alias python=python3
 
-export PIP_CONFIG_FILE=/Users/liam/.config/pip/pip.conf
+export PIP_CONFIG_FILE=$HOME/.config/pip/pip.conf
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_THEME="cloud"
 
