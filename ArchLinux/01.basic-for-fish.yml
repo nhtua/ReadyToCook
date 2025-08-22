@@ -1,3 +1,11 @@
+# This playbook installs and configures essential tools for a Fish shell environment on Arch Linux.
+# It covers:
+# - Core utilities: fish, neovim, htop, btop, tmux, fzf, fd, ripgrep
+# - Nerd fonts: ttf-hack-nerd, ttf-noto-nerd
+# - Fish shell configuration: copies config.fish from Shared
+# - NeoVim setup: installs Lazy.nvim and copies core.lua from Shared
+# - Tmux setup: installs TPM and copies .tmux.conf from Shared
+# - Fish plugin managers: installs Fisher and nvm.fish
 ---
 - hosts: localhost
   connection: local

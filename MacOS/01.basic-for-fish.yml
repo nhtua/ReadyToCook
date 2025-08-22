@@ -1,3 +1,11 @@
+# This playbook sets up a basic Fish Shell for a development environment on macOS, including:
+# - Installs essential CLI tools like fish, neovim, htop, btop, tmux, fzf, fd, ripgrep, pyenv using Homebrew.
+# - Installs powerline fonts for a better terminal experience.
+# - Configures Fish shell with a shared configuration and extra settings.
+# - Sets up Lazy.nvim for Neovim configuration.
+# - Installs and configures Tmux with a shared configuration.
+# - Installs Fisher plugin manager for Fish shell.
+# - Installs Node Version Manager (nvm.fish) for Fish shell.
 ---
 - hosts: localhost
   connection: local

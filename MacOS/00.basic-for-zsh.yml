@@ -1,3 +1,12 @@
+# This Ansible playbook automates the setup of a basic Zsh development environment on macOS.
+# It performs the following actions:
+# - Installs Oh My Zsh if not already present.
+# - Configures ~/.zprofile to source ~/.zshrc.
+# - Copies a custom .zshrc configuration file.
+# - Installs essential Homebrew packages: neovim, htop, btop, tmux, fzf, fd, ripgrep, pyenv, nvm.
+# - Installs various Powerline-compatible fonts via Homebrew Cask: font-powerline-symbols, font-consolas-for-powerline, font-fira-mono-for-powerline, font-noto-mono-for-powerline, font-hack-nerd-font.
+# - Sets up Lazy.nvim for Neovim, cloning the starter configuration and copying a custom core.lua.
+# - Installs Tmux Plugin Manager (tpm) and copies a custom .tmux.conf file.
 ---
 - hosts: localhost
   connection: local

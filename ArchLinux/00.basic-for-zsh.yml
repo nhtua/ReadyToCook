@@ -1,3 +1,7 @@
+# This playbook sets up a basic Zsh environment with Oh My Zsh, 
+# installs essential command-line tools (neovim, htop, btop, tmux, fzf, fd, ripgrep, pyenv), 
+# installs Nerd Fonts, configures Neovim with Lazy.nvim, 
+# sets up Tmux with TPM, and installs Node Version Manager (nvm).
 ---
 - hosts: localhost
   connection: local
