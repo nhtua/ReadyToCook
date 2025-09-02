@@ -37,14 +37,13 @@ To run your chosen playbook:
 ansible-playbook <path/to/your/choosed/playbook.yml>
 ```
 
-To really get the kitchen humming with fresh Linux packages and software, run your command with these extra ingredients:
+To really get the fresh Linux packages and softwares, run your command with these extra ingredients:
 
 ```
 ansible-playbook <path/to/your/choosed/playbook.yml> --ask-become --extra-vars "should_update_os=true"
 ```
 
-Whenever you tweak a config, just re-run the setup command to apply those sweet, sweet changes. It's like seasoning your dish – gotta taste and adjust!
-
+In most cases, when you change a configuration file in this repo, it also changes the target as we are using symlinks here. But changes in playbooks would require you to rerun commands above.
 
 ### Playbooks and files structure
 
