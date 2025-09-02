@@ -12,7 +12,7 @@
   remote_user: "{{ lookup('env', 'USER') }}"
   tasks:
     - homebrew:
-        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
+        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv,starship
         state: present
         update_homebrew: yes
       when: should_update_os | default(false) | bool
@@ -27,17 +27,11 @@
         path: ~/.config/fish/config.fish
         state: link
         force: true
-    - name: Copy Fish config
-      copy:
-        src: ../Shared/config.fish
-        dest: ~/.config/fish/config.fish
-        create_parents: yes
-      when: not fish_config_file.stat.exists
-    - name: Copy Fish extra config
-      copy:
-        src: extra.config.fish
-        dest: ~/.config/fish/conf.d/extra.config.fish
-        create_parents: yes
+    - file:
+        src: "{{ playbook_dir | dirname }}/extra.config.fish"
+        path: ~/.config/fish/conf.d/extra.config.fish
+        state: link
+        force: true
     - stat: # Keep all sensitive environment variables for Fish shell in this file
         path: ../Nonesharable/secrets.config.fish
       register: fish_secrets_file
@@ -109,4 +103,5 @@
       ansible.builtin.shell: |
         fisher install jethrokuan/fzf
       args:
-        executable: /usr/bin/fish
+        executable: /opt/homebrew/bin/fish
+
