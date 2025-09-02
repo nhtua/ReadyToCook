@@ -5,7 +5,7 @@ Ever dreamt of setting up your dev environment faster than a microwave dinner? W
 ### Why not just dotfiles?
 _Because we're not barbarians._
 
-Look, `dotfiles` are cute. They're like that one friend who still uses a flip phone – charming, but kinda limited. They're great for copying files, but what if you need to check if a package is installed? Or maybe only run something if you're on a specific OS? Or perhaps you need to restart a service ONLY if its config changed?
+Look, `dotfiles` are cute. They're like that one friend who still uses a flip phone – charming, but kinda limited. They're great for managing configuration files, but what if you need to check if a package is installed? Or maybe only run something if you're on a specific OS? Or perhaps you need to restart a service ONLY if its config changed?
 
 That's where Ansible struts in like a Michelin-star chef. It's the master of configuration management, doing way more than just copy-pasting. It understands state, can do conditional checks, handle dependencies, and even order a pizza if you configure it right (okay, maybe not the pizza, but you get the idea!). It's about making sure your dev environment isn't just *there*, but *perfectly seasoned* and *ready to cook*.
 
