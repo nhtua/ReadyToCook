@@ -31,7 +31,7 @@ _Time to get cooking!_
 
 First, peek into those OS-specific directories (we'll break down the file structure later). Each YAML file is an Ansible playbook. Pick your poison wisely! Just a heads-up: some playbooks might fight each other, so read the embedded docs in each YAML to avoid a kitchen disaster. I'm looking for your receipt to do better conflict prevention here.
 
-To run your chosen playbook:
+To run your chosen playbook. This command will manage configuration files (dotfiles).
 
 ```
 ansible-playbook <path/to/your/choosed/playbook.yml>
