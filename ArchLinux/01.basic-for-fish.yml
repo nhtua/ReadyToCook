@@ -13,7 +13,7 @@
   tasks:
     - name: Update packages (slow)
       pacman:
-        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
+        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv,starship
         state: present
         update_cache: yes
       become: true
@@ -39,6 +39,11 @@
         state: link
         force: true
       when: fish_secrets_file.stat.exists
+    - file:
+        src: "{{ playbook_dir | dirname }}/Shared/starship.toml"
+        path: ~/.config/starship.toml
+        state: link
+        force: true
 
     - name: Setup NeoVim/LazyVim
       stat:
@@ -91,5 +96,10 @@
     - name: Install Node Version Manager
       ansible.builtin.shell: |
         fisher install jorgebucaran/nvm.fish
+      args:
+        executable: /usr/bin/fish
+    - name: Install Fzf search
+      ansible.builtin.shell: |
+        fisher install jethrokuan/fzf
       args:
         executable: /usr/bin/fish

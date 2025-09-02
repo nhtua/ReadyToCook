@@ -13,4 +13,5 @@ set -Ux PYENV_ROOT "$HOME/.pyenv"
 set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
 pyenv init - fish | source
 
+set -Ux STARSHIP_CONFIG "$HOME/.config/starship.toml"
 starship init fish | source
