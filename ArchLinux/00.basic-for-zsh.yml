@@ -33,15 +33,16 @@
       dest: ~/.zshrc
 
   - pacman:
-      name: neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
+      name: neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv,nvm
       state: present
       update_cache: yes
     become: true
+    when: should_update_os | default(false) | bool
   - pacman:
       name: ttf-hack-nerd,ttf-noto-nerd
       state: present
     become: true
-
+    when: should_update_os | default(false) | bool
   - name: Check if Lazy.nvim exists
     stat:
       path: ~/.config/nvim
@@ -70,8 +71,3 @@
     copy:
       src: ../Shared/.tmux.conf
       dest: ~/.tmux.conf
-  - name: Install Node Version Manager
-    homebrew:
-      name: nvm
-      state: present
-

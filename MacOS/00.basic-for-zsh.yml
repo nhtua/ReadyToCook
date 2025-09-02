@@ -41,9 +41,11 @@
         name: neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
         state: present
         update_homebrew: yes
+      when: should_update_os | default(false) | bool
     - homebrew_cask:
         name: font-powerline-symbols,font-consolas-for-powerline,font-fira-mono-for-powerline,font-noto-mono-for-powerline,font-hack-nerd-font
         state: present
+      when: should_update_os | default(false) | bool
 
     - name: Check if Lazy.nvim exists
       stat:
@@ -77,3 +79,4 @@
       homebrew:
         name: nvm
         state: present
+      when: should_update_os | default(false) | bool

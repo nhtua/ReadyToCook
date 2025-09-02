@@ -34,7 +34,13 @@ First, peek into those OS-specific directories (we'll break down the file struct
 To run your chosen playbook:
 
 ```
-ansible-playbook --ask-become <path/to/your/choosed/playbook.yml>
+ansible-playbook <path/to/your/choosed/playbook.yml>
+```
+
+To really get the kitchen humming with fresh Linux packages and software, run your command with these extra ingredients:
+
+```
+ansible-playbook <path/to/your/choosed/playbook.yml> --ask-become --extra-vars "should_update_os=true"
 ```
 
 Whenever you tweak a config, just re-run the setup command to apply those sweet, sweet changes. It's like seasoning your dish – gotta taste and adjust!

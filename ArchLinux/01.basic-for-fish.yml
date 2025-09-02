@@ -17,10 +17,12 @@
         state: present
         update_cache: yes
       become: true
+      when: should_update_os | default(false) | bool
     - pacman:
         name: ttf-hack-nerd,ttf-noto-nerd
         state: present
       become: true
+      when: should_update_os | default(false) | bool
 
     - name: Setup Fish shell
       file:
