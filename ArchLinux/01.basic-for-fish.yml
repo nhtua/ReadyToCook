@@ -11,8 +11,9 @@
   connection: local
   remote_user: "{{ lookup('env', 'USER') }}"
   tasks:
-    - pacman:
-        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep
+    - name: Update packages (slow)
+      pacman:
+        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv
         state: present
         update_cache: yes
       become: true
@@ -21,51 +22,65 @@
         state: present
       become: true
 
-    - name: check if Fish config exists
-      stat:
+    - name: Setup Fish shell
+      file:
+        src: "{{ playbook_dir | dirname }}/Shared/config.fish"
         path: ~/.config/fish/config.fish
-      register: fish_config_file
-    - name: Copy Fish config
-      copy:
-        src: ../Shared/config.fish
-        dest: ~/.config/fish/config.fish
-        create_parents: yes
-      when: not fish_config_file.stat.exists
+        state: link
+        force: true
+    - stat: # Keep all sensitive environment variables for Fish shell in this file
+        path: ../Nonesharable/secrets.config.fish
+      register: fish_secrets_file
+    - file:
+        src: "{{ playbook_dir | dirname }}/Nonesharable/secrets.config.fish"
+        path: ~/.config/fish/conf.d/secrets.config.fish
+        state: link
+        force: true
+      when: fish_secrets_file.stat.exists
 
-    - name: Check if Lazy.nvim exists
+    - name: Setup NeoVim/LazyVim
       stat:
         path: ~/.config/nvim
       register: lazynvim_dir
-    - name: Download Lazy.nvim
-      git:
+    - git:
         repo: https://github.com/LazyVim/starter
         dest: ~/.config/nvim
         depth: 1
       when: not lazynvim_dir.stat.exists
-    - name: Clean up Lazy.nvim
-      file:
+    - file:
         path: ~/.config/nvim/.git
         state: absent
-    - name: Clheck if NeoVim config exists
-      stat:
+    - file:
+        src: "{{ playbook_dir | dirname }}/Shared/nvim-core.lua"
         path: ~/.config/nvim/lua/plugins/core.lua
-      register: nvim_config_file
-    - name: Copy NeoVim config
-      copy:
-        src: ../Shared/nvim-core.lua
-        dest: ~/.config/nvim/lua/plugins/core.lua
-      when: not nvim_config_file.stat.exists
+        state: link
+        force: true
 
-    - name: Install Tmux TMP plugins manager
+    - name: Setup Tmux
       git:
         repo: https://github.com/tmux-plugins/tpm
         dest: ~/.tmux/plugins/tpm
         depth: 1
-    - name: Copying Tmux configuration
-      copy:
-        src: ../Shared/.tmux.conf
-        dest: ~/.tmux.conf
+    - file:
+        src: "{{ playbook_dir | dirname }}/Shared/.tmux.conf"
+        path: ~/.tmux.conf
+        state: link
+        force: true
+    - stat: # Add your Tmux custom into this file
+        path: ../Nonesharable/tmux_default.conf
+      register: optional_tmux_file
+    - file:
+        path: "~/.config/tmux"
+        state: directory
+        mode: "0755"
+    - file:
+        src: "{{ playbook_dir | dirname }}/Nonesharable/tmux_default.conf"
+        path: "~/.config/tmux/default.conf"
+        state: link
+        force: true
+      when: optional_tmux_file.stat.exists
 
+    # Some other alternative on Fish shell
     - name: Install Fisher plugin manager
       ansible.builtin.shell: |
         curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
