@@ -13,13 +13,34 @@
   tasks:
     - name: Update packages (slow)
       pacman:
-        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv,starship
+        name: 
+        - fish
+        - neovim
+        - htop
+        - btop
+        - tmux
+        - fzf
+        - fd
+        - ripgrep
+        - starship
         state: present
         update_cache: yes
       become: true
       when: should_update_os | default(false) | bool
     - pacman:
         name: ttf-hack-nerd,ttf-noto-nerd
+        state: present
+      become: true
+      when: should_update_os | default(false) | bool
+
+    - name: Install CLI tools for my jobs
+      pacman:
+        name:
+        - rustup
+        - pyenv
+        - terraform
+        - opentofu
+        - aws-cli-v2
         state: present
       become: true
       when: should_update_os | default(false) | bool

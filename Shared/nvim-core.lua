@@ -201,8 +201,8 @@ return {
           model = "gpt-5-mini",
           timeout = 30000,
           extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 4096, -- Adjust as needed
+            temperature = 1,
+            max_completion_tokens = 8192,
           },
         },
       },

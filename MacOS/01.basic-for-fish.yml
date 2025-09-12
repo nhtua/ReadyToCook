@@ -12,7 +12,24 @@
   remote_user: "{{ lookup('env', 'USER') }}"
   tasks:
     - homebrew:
-        name: fish,neovim,htop,btop,tmux,fzf,fd,ripgrep,pyenv,starship
+        name:
+          - fish
+          - neovim
+          - htop
+          - btop
+          - tmux
+          - fzf
+          - fd
+          - ripgrep
+          - pyenv
+          - starship
+        state: present
+        update_homebrew: yes
+      when: should_update_os | default(false) | bool
+    - homebrew:
+        name:
+          - rustup
+          - go
         state: present
         update_homebrew: yes
       when: should_update_os | default(false) | bool
@@ -93,7 +110,7 @@
       ansible.builtin.shell: |
         curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
       args:
-          executable: /opt/homebrew/bin/fish
+        executable: /opt/homebrew/bin/fish
     - name: Install Node Version Manager
       ansible.builtin.shell: |
         fisher install jorgebucaran/nvm.fish
@@ -105,3 +122,6 @@
       args:
         executable: /opt/homebrew/bin/fish
 
+    - name: "Summary"
+      ansible.builtin.debug:
+        msg: "☂️  Don't forget to run `rustup-init` if this is your first time install it."
