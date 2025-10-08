@@ -1,55 +1,40 @@
-# Ready to Cook, Chef?? 🧑‍🍳 #
+# ReadyToCook: Workstation Setup Automation
 
-Ever dreamt of setting up your dev environment faster than a microwave dinner? Well, dream no more! This repo helps you get your workstation ready in minutes, leveraging community-shared configs. Think of it as your secret sauce to setting up your new PC like a seasoned IT pro – no arcane rituals, just pure automation goodness.
+This repository provides Ansible playbooks for automated workstation setup and configuration. It leverages community-shared configurations to streamline the deployment of development environments.
 
-### Why not just dotfiles?
-_Because we're not barbarians._
+## Rationale for Ansible over Dotfiles
+Ansible provides comprehensive configuration management, including package installation verification, operating system-specific conditional execution, and service management. It offers state awareness, dependency handling, and conditional logic, ensuring robust environment setup, which are advanced capabilities beyond traditional dotfile management.
 
-Look, `dotfiles` are cute. They're like that one friend who still uses a flip phone – charming, but kinda limited. They're great for managing configuration files, but what if you need to check if a package is installed? Or maybe only run something if you're on a specific OS? Or perhaps you need to restart a service ONLY if its config changed?
+## Installation
 
-That's where Ansible struts in like a Michelin-star chef. It's the master of configuration management, doing way more than just copy-pasting. It understands state, can do conditional checks, handle dependencies, and even order a pizza if you configure it right (okay, maybe not the pizza, but you get the idea!). It's about making sure your dev environment isn't just *there*, but *perfectly seasoned* and *ready to cook*.
-
-
-### Installation 
-_Because you can't cook without a stove._
-
-For macOS:
-
-```
+### macOS:
+```bash
 brew install ansible
 ```
 
-For Arch Linux:
-
-```
+### Arch Linux:
+```bash
 sudo pacman -S ansible
 ```
 
+## Usage
+Ansible playbooks are located in OS-specific directories. Each `.yml` file represents a distinct playbook. Review embedded documentation for functionality and potential interactions.
 
-### Running setup 
-_Time to get cooking!_
-
-First, peek into those OS-specific directories (we'll break down the file structure later). Each YAML file is an Ansible playbook. Pick your poison wisely! Just a heads-up: some playbooks might fight each other, so read the embedded docs in each YAML to avoid a kitchen disaster. I'm looking for your receipt to do better conflict prevention here.
-
-To run your chosen playbook. This command will manage configuration files (dotfiles).
-
-```
+### Configuration Management (Dotfiles):
+```bash
 ansible-playbook <path/to/your/choosed/playbook.yml>
 ```
 
-To really get the fresh Linux packages and softwares, run your command with these extra ingredients:
-
-```
+### System Update (Linux packages and software):
+```bash
 ansible-playbook <path/to/your/choosed/playbook.yml> --ask-become --extra-vars "should_update_os=true"
 ```
 
-In most cases, when you change a configuration file in this repo, it also changes the target as we are using symlinks here. But changes in playbooks would require you to rerun commands above.
+Configuration files managed via symlinks are automatically updated upon source file modification. Playbook changes require re-execution of the setup command.
 
-### Playbooks and files structure
+## Directory Structure
 
-This repo is a collection of Ansible Playbooks, each directory is matching to target Operating System.
-
-In each directory, each Yaml file does a certain setup for you. I added my common basic usages for coding with Python. Someone else may adds other playbook as their will.
+This repository organizes Ansible playbooks by target operating system. Each `.yml` file within an OS-specific directory performs a distinct setup task. Common configurations for Python development are included, with provisions for additional user-contributed playbooks.
 
 ```
 ReadyToCook_repo/
@@ -63,23 +48,12 @@ ReadyToCook_repo/
 |  |--something-else
 ```
 
+### Specialized Directories:
+1. `Shared/`: Contains common configuration files for various applications, providing basic operational settings.
+2. `Nonsharable/`: Designed for system-specific customizations. Files in this directory can be modified locally and applied via setup commands without Git tracking.
 
-You noticed there are 2 special directories:
-
-1. `Shared/`: These are common configuration files for various application. You want a most basic config that allows the application to start working.
-2. `Nonsharable/`: These are customization only available on your system. You can put them here, modify the configuration, run the setup command again to apply. These files won't be upload to git repository.
-
-
-### Customization
-
-These are just a way of life that speeds up or backs up for your local machine / working station. You can modify anything without pushing changes back to the repo.
-
-In case you want to contributes your playbook and configuration, keep in mind:
-
-- Don't commit to the repo the sensitive information like SSL keys, certificates, passwords, etc.
-- Write the playbook properly that checks existing files and state also prevent the loss of your customization
-- Put playbook files in an appropriate operating system directory, with increasing prefix number. It should have an equal prefix number if different OSes, and skip it if it is not available for some OSes.
-
-Thank you. And...
-
-**Let's cook!!**
+## Contribution Guidelines
+Local modifications are supported without requiring repository commits. For contributions, adhere to the following:
+- Avoid committing sensitive information (e.g., SSL keys, certificates, passwords).
+- Develop playbooks to include checks for existing files and system state, preventing loss of custom configurations.
+- Place playbook files in the appropriate operating system directory, using an increasing numerical prefix. Ensure consistent prefix numbering across different OSes; skip numbers for OSes where a playbook is not applicable.
