@@ -110,7 +110,7 @@ return {
             {
               'filename',
               path = 3,
-              shorting_target = 40
+              shortening_target = 40
             }
           },
         }
@@ -176,6 +176,17 @@ return {
       -- for example
       provider = "gemini",
       providers = {
+        ["xAI"] = {
+          __inherited_from = "openai",
+          model = "grok-4-fast-reasoning",
+          endpoint = "https://api.x.ai/v1",
+          api_key_name = "AVANTE_XAI_API_KEY",
+          timeout = 30000,
+          extra_request_body = {
+            temperature = 0.5,
+            max_tokens = 30384,
+          },
+        },
         claude = {
           endpoint = "https://api.anthropic.com",
           model = "claude-sonnet-4-20250514",
